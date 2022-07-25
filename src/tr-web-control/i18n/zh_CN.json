@@ -264,7 +264,7 @@
 			"title": "设置新目录",
 			"old-download-dir": "原目录：",
 			"new-download-dir": "新目录：",
-			"move-data": "同时移动数据(如果不钩选，则从新目录下查找文件)",
+			"move-data": "同时移动数据(如果不勾选，则从新目录下查找文件)",
 			"set-error": "设置目录失败！",
 			"recheck-data": "设置完成后重新校验。"
 		},
