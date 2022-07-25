@@ -1,8 +1,8 @@
 // Current system global object
 var system = {
-	version: "1.6.1",
+	version: "1.6.2",
 	rootPath: "tr-web-control/",
-	codeupdate: "20200913",
+	codeupdate: "20220725",
 	configHead: "transmission-web-control",
 	// default config, can be customized in config.js
 	config: {
@@ -71,6 +71,7 @@ var system = {
 	// The currently selected torrent number
 	currentTorrentId: 0,
 	flags: [],
+	ipAddressMap: {},
 	ipdetail: [],
 	control: {
 		tree: null,
@@ -2894,6 +2895,7 @@ var system = {
 			if (system.config.ipInfoToken !== '' || system.config.ipInfoFlagUrl !== '') {
 				let flag = '';
 				let detail = '';
+				let ipAddress = '';
 				let ip = rowdata['address'];
 
 				if (system.config.ipInfoDetailUrl !== '') {
@@ -2917,19 +2919,21 @@ var system = {
 					if (system.config.ipInfoFlagUrl !== '') {
 						url = this.expandIpInfoUrl(system.config.ipInfoFlagUrl, ip);
 					} else {
-						url = 'https://ipinfo.io/' + ip + '/country?token=' + system.config.ipInfoToken;
+						url = 'https://ipinfo.io/' + ip + '?token=' + system.config.ipInfoToken;
 					}
 					$.ajax({
 						type: "GET",
 						url: url
 					}).done((data) => {
 						if (data) {
-							flag = data.toLowerCase().trim();
+							flag = data.country.toLowerCase().trim();
 							this.flags[ip] = flag;
+							ipAddress = data.city + ',' + data.region + ',' + flag;
+							this.ipAddressMap[ip] = ipAddress
 							$("img.img_ip-"+ip.replaceAll(/[:.]+/g,'_')).attr({
 								src: this.rootPath + 'style/flags/' + flag + '.png',
-								alt: flag,
-								title: detail!==''? detail : flag
+								alt: ipAddress,
+								title: detail !== '' ? detail : ipAddress
 							}).show();
 						}
 					});
@@ -2939,7 +2943,7 @@ var system = {
 
 				let img = "";
 				if (flag) {
-					img = '<img src="' + this.rootPath + 'style/flags/' + flag + '.png" alt="' + flag + '" title="' + (detail!==''? detail : flag) + '"> ';
+					img = '<img src="' + this.rootPath + 'style/flags/' + flag + '.png" alt="' + this.ipAddressMap[ip] + '" title="' + (detail!==''? detail : this.ipAddressMap[ip]) + '"> ';
 				} else {
 					img = '<img src="" class="img_ip-'+ip.replaceAll(/[:.]+/g,'_')+'" style="display:none;"> ';
 				}

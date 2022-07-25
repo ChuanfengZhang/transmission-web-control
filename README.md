@@ -7,6 +7,10 @@
 <a href="https://t.me/transmission_web_control"><img src="https://img.shields.io/badge/Telegram-Chat-blue.svg?logo=telegram" alt="Telegram"/></a>
 </p>
 
+## 原版基础上修改内容
+
+- IP 地址归属地精确到城市
+
 ----
 ## [English Introduction](https://github.com/ronggang/transmission-web-control/wiki)
 
